@@ -5,6 +5,7 @@ frontend:
       commands:
         - npm ci
         - npm run env
+
     build:
       commands:
         - npm run build
