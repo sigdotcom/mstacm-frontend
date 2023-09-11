@@ -4,6 +4,7 @@ frontend:
     preBuild:
       commands:
         - npm ci
+        - export DEPLOYING_ENV_VAR=prod
         - npm run env
 
     build:

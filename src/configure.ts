@@ -1,16 +1,27 @@
-import { SSMClient, GetParameterCommand } from "@aws-sdk/client-ssm";
+import {
+  SSMClient,
+  GetParameterCommand,
+  SSMClientConfig,
+} from "@aws-sdk/client-ssm";
 import { fromSSO } from "@aws-sdk/credential-provider-sso";
 import * as fs from "fs";
 
 const REGION = "us-east-1";
 const PROFILE = "dev";
 
-// Initializing the SSM client with specific profile and region
-const ssmClient = new SSMClient({
-  region: REGION,
-  credentials: fromSSO({ profile: PROFILE }),
-});
+const env = process.env.DEPLOYING_ENV_VAR || null;
 
+// Initializing the SSM client with specific profile and region
+const ssmClientConfig: SSMClientConfig = {
+  region: REGION,
+};
+
+if (!env) {
+  ssmClientConfig.credentials = fromSSO({ profile: PROFILE });
+  console.log("RUNNING IN LOCAL CONFIG");
+}
+
+const ssmClient = new SSMClient(ssmClientConfig);
 // Fetch parameters
 async function fetchParameters() {
   try {
