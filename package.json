@@ -22,7 +22,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "configure": "tsc ./src/configure.ts && node ./src/configure.js"
+    "login": "aws sso login",
+    "env": "tsc ./src/configure.ts && node ./src/configure.js"
   },
   "eslintConfig": {
     "extends": [
