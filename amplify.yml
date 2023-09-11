@@ -4,7 +4,8 @@ frontend:
     preBuild:
       commands:
         - npm ci
-        - node run env
+        - npm run env
+
     build:
       commands:
         - npm run build
