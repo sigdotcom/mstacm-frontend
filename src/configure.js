@@ -41,11 +41,16 @@ var credential_provider_sso_1 = require("@aws-sdk/credential-provider-sso");
 var fs = require("fs");
 var REGION = "us-east-1";
 var PROFILE = "dev";
+var env = process.env.DEPLOYING_ENV_VAR || null;
 // Initializing the SSM client with specific profile and region
-var ssmClient = new client_ssm_1.SSMClient({
-    region: REGION,
-    credentials: (0, credential_provider_sso_1.fromSSO)({ profile: PROFILE })
-});
+var ssmClientConfig = {
+    region: REGION
+};
+if (!env) {
+    ssmClientConfig.credentials = (0, credential_provider_sso_1.fromSSO)({ profile: PROFILE });
+    console.log("RUNNING IN DEV");
+}
+var ssmClient = new client_ssm_1.SSMClient(ssmClientConfig);
 // Fetch parameters
 function fetchParameters() {
     var _a, _b, _c, _d, _e;
