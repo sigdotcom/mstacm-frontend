@@ -48,7 +48,7 @@ var ssmClientConfig = {
 };
 if (!env) {
     ssmClientConfig.credentials = (0, credential_provider_sso_1.fromSSO)({ profile: PROFILE });
-    console.log("RUNNING IN DEV");
+    console.log("RUNNING IN LOCAL CONFIG");
 }
 var ssmClient = new client_ssm_1.SSMClient(ssmClientConfig);
 // Fetch parameters
