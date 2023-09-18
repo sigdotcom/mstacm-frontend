@@ -53,13 +53,16 @@ if (!env) {
 var ssmClient = new client_ssm_1.SSMClient(ssmClientConfig);
 // Fetch parameters
 function fetchParameters() {
-    var _a, _b, _c, _d, _e;
+    var _a, _b, _c, _d, _e, _f;
     return __awaiter(this, void 0, void 0, function () {
-        var authDomain, userPoolId, userPoolWebClientId, redirectSignIn, redirectSignOut, authDomainResponse, userPoolIdResponse, userPoolWebClientIdResponse, redirectSignInResponse, redirectSignOutResponse, envContent, formattedEnv, error_1;
-        return __generator(this, function (_f) {
-            switch (_f.label) {
+        var apiUrl, authDomain, userPoolId, userPoolWebClientId, redirectSignIn, redirectSignOut, authDomainResponse, userPoolIdResponse, userPoolWebClientIdResponse, redirectSignInResponse, redirectSignOutResponse, envContent, formattedEnv, error_1;
+        return __generator(this, function (_g) {
+            switch (_g.label) {
                 case 0:
-                    _f.trys.push([0, 6, , 7]);
+                    apiUrl = "https://nnikhk3cq3.execute-api.us-east-1.amazonaws.com/Prod";
+                    _g.label = 1;
+                case 1:
+                    _g.trys.push([1, 7, , 8]);
                     authDomain = new client_ssm_1.GetParameterCommand({
                         Name: "authDomain",
                         WithDecryption: true
@@ -81,33 +84,36 @@ function fetchParameters() {
                         WithDecryption: true
                     });
                     return [4 /*yield*/, ssmClient.send(authDomain)];
-                case 1:
-                    authDomainResponse = _f.sent();
-                    return [4 /*yield*/, ssmClient.send(userPoolId)];
                 case 2:
-                    userPoolIdResponse = _f.sent();
-                    return [4 /*yield*/, ssmClient.send(userPoolWebClientId)];
+                    authDomainResponse = _g.sent();
+                    return [4 /*yield*/, ssmClient.send(userPoolId)];
                 case 3:
-                    userPoolWebClientIdResponse = _f.sent();
-                    return [4 /*yield*/, ssmClient.send(redirectSignIn)];
+                    userPoolIdResponse = _g.sent();
+                    return [4 /*yield*/, ssmClient.send(userPoolWebClientId)];
                 case 4:
-                    redirectSignInResponse = _f.sent();
-                    return [4 /*yield*/, ssmClient.send(redirectSignOut)];
+                    userPoolWebClientIdResponse = _g.sent();
+                    return [4 /*yield*/, ssmClient.send(redirectSignIn)];
                 case 5:
-                    redirectSignOutResponse = _f.sent();
-                    envContent = "\n        REACT_APP_AUTH_DOMAIN=".concat((_a = authDomainResponse.Parameter) === null || _a === void 0 ? void 0 : _a.Value, "\n        REACT_APP_USER_POOL_ID=").concat((_b = userPoolIdResponse.Parameter) === null || _b === void 0 ? void 0 : _b.Value, "\n        REACT_APP_USER_POOL_CLIENT_ID=").concat((_c = userPoolWebClientIdResponse.Parameter) === null || _c === void 0 ? void 0 : _c.Value, "\n        REACT_APP_REDIRECT_SIGNIN_URL=").concat((_d = redirectSignInResponse.Parameter) === null || _d === void 0 ? void 0 : _d.Value, "\n        REACT_APP_REDIRECT_SIGNOUT_URL=").concat((_e = redirectSignOutResponse.Parameter) === null || _e === void 0 ? void 0 : _e.Value, "\n      ");
+                    redirectSignInResponse = _g.sent();
+                    return [4 /*yield*/, ssmClient.send(redirectSignOut)];
+                case 6:
+                    redirectSignOutResponse = _g.sent();
+                    if (((_a = authDomainResponse.Parameter) === null || _a === void 0 ? void 0 : _a.Value) === "mstacm-prod-auth") {
+                        apiUrl = "https://dcyks1vctb.execute-api.us-east-1.amazonaws.com/Prod";
+                    }
+                    envContent = "\n        REACT_APP_AUTH_DOMAIN=".concat((_b = authDomainResponse.Parameter) === null || _b === void 0 ? void 0 : _b.Value, "\n        REACT_APP_USER_POOL_ID=").concat((_c = userPoolIdResponse.Parameter) === null || _c === void 0 ? void 0 : _c.Value, "\n        REACT_APP_USER_POOL_CLIENT_ID=").concat((_d = userPoolWebClientIdResponse.Parameter) === null || _d === void 0 ? void 0 : _d.Value, "\n        REACT_APP_REDIRECT_SIGNIN_URL=").concat((_e = redirectSignInResponse.Parameter) === null || _e === void 0 ? void 0 : _e.Value, "\n        REACT_APP_REDIRECT_SIGNOUT_URL=").concat((_f = redirectSignOutResponse.Parameter) === null || _f === void 0 ? void 0 : _f.Value, "\n        REACT_APP_API_URL=").concat(apiUrl, "\n      ");
                     formattedEnv = envContent
                         .split("\n")
                         .map(function (line) { return line.trim(); })
                         .join("\n")
                         .trim();
                     fs.writeFileSync(".env", formattedEnv);
-                    return [3 /*break*/, 7];
-                case 6:
-                    error_1 = _f.sent();
+                    return [3 /*break*/, 8];
+                case 7:
+                    error_1 = _g.sent();
                     console.error("Error fetching parameters:", error_1);
-                    return [3 /*break*/, 7];
-                case 7: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });
