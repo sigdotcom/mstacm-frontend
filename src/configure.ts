@@ -24,6 +24,9 @@ if (!env) {
 const ssmClient = new SSMClient(ssmClientConfig);
 // Fetch parameters
 async function fetchParameters() {
+  let apiUrl: string =
+    "https://nnikhk3cq3.execute-api.us-east-1.amazonaws.com/Prod";
+
   try {
     const authDomain = new GetParameterCommand({
       Name: "authDomain",
@@ -55,13 +58,19 @@ async function fetchParameters() {
     const redirectSignInResponse = await ssmClient.send(redirectSignIn);
     const redirectSignOutResponse = await ssmClient.send(redirectSignOut);
 
+    if (authDomainResponse.Parameter?.Value === "mstacm-prod-auth") {
+      apiUrl = "https://dcyks1vctb.execute-api.us-east-1.amazonaws.com/Prod";
+    }
+
     const envContent = `
         REACT_APP_AUTH_DOMAIN=${authDomainResponse.Parameter?.Value}
         REACT_APP_USER_POOL_ID=${userPoolIdResponse.Parameter?.Value}
         REACT_APP_USER_POOL_CLIENT_ID=${userPoolWebClientIdResponse.Parameter?.Value}
         REACT_APP_REDIRECT_SIGNIN_URL=${redirectSignInResponse.Parameter?.Value}
         REACT_APP_REDIRECT_SIGNOUT_URL=${redirectSignOutResponse.Parameter?.Value}
+        REACT_APP_API_URL=${apiUrl}
       `;
+
     const formattedEnv = envContent
       .split("\n")
       .map((line) => line.trim())
