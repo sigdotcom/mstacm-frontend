@@ -9,7 +9,6 @@ const Home: React.FC = () => {
     const checkAuth = async () => {
       setIsAuthenticated(await checkUserAuthentication());
     };
-
     checkAuth();
   }, []);
 

@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { Box } from "@mui/joy";
+import Sidebar from "./Sidebar";
 import { useListResumes, useInsertResume } from "../../api/resume";
 
 const Dashboard: React.FC = () => {
@@ -24,21 +26,12 @@ const Dashboard: React.FC = () => {
   console.log(data);
   return (
     <div>
-      <h1>Dashboard</h1>
-      <p>{isLoading ? "loading" : "not loading"}</p>
-      <input
-        type="text"
-        value={inputValue}
-        onChange={handleInputChange}
-        placeholder="Enter a string..."
-      />
-      <button style={{ height: 20 }} onClick={handlePostClick}>
-        post api
-      </button>
-
-      <button style={{ height: 20 }} onClick={handleGetClick}>
-        get api
-      </button>
+      <Box sx={{ display: "flex" }}>
+        <Sidebar />
+        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+          {/* Your main content will go here */}
+        </Box>
+      </Box>
     </div>
   );
 };

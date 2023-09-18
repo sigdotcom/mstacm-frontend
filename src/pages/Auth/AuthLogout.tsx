@@ -2,7 +2,7 @@ import { Auth } from "aws-amplify";
 import React from "react";
 
 const AuthLogout: React.FC = () => {
-  const checkUserAuthentication = async () => {
+  const logout = async () => {
     try {
       await Auth.signOut();
       console.log("Successfully signed out");
@@ -11,7 +11,7 @@ const AuthLogout: React.FC = () => {
     }
   };
 
-  checkUserAuthentication();
+  logout();
   return (
     <div>
       <p>Logging out...</p>
