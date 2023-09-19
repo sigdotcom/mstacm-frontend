@@ -36,7 +36,7 @@ export function getToolRoutes() {
       ) {
         return null;
       } else {
-        return redirect("/denied");
+        return redirect("/dashboard");
       }
     },
   }));

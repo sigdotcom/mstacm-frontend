@@ -4,7 +4,6 @@ import { Dashboard } from "./Dashboard";
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { checkUserAuthentication } from "../common";
 import { getToolRoutes } from "./Dashboard/tools/tools";
-import Denied from "../components/Denied";
 
 async function protectedLoader(): Promise<Response | null> {
   const isAuthenticated = await checkUserAuthentication();
@@ -45,10 +44,6 @@ const pages = createBrowserRouter([
         loader: protectedLoader,
         Component: Dashboard,
         children: getToolRoutes(),
-      },
-      {
-        path: "dashboard/denied",
-        Component: Denied,
       },
     ],
   },

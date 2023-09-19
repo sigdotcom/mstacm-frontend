@@ -9,24 +9,25 @@ import {
 } from "@mui/joy";
 import Menu from "@mui/icons-material/Menu";
 
-import { useMediaQuery } from "@mui/material";
 import { Tool } from "./types";
 import { Link } from "react-router-dom";
 
 interface SidebarProps {
   tools: Tool[];
+  isDesktop: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ tools }) => {
+const Sidebar: React.FC<SidebarProps> = ({ tools, isDesktop }) => {
   const [open, setOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const isDesktop = useMediaQuery("(min-width:1025px)");
+
   return (
     <React.Fragment>
       {/* Button to open drawer on mobile */}
       {!isDesktop && (
         <IconButton
           variant="outlined"
+          style={{ height: 0 }}
           color="neutral"
           onClick={() => setOpen(true)}
         >
@@ -88,6 +89,7 @@ const Sidebar: React.FC<SidebarProps> = ({ tools }) => {
               <Link to={"/dashboard/" + tool.path}>
                 <ListItemButton
                   key={tool.name}
+                  onClick={() => setOpen(false)}
                   sx={{
                     fontWeight: "lg",
                     justifyContent: "center",
