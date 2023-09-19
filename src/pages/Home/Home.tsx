@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { checkUserAuthentication } from "../../common";
 
 const Home: React.FC = () => {
@@ -35,8 +35,6 @@ const Home: React.FC = () => {
           <></>
         )}
       </ul>
-
-      <Outlet />
     </div>
   );
 };

@@ -3,13 +3,18 @@ import { AuthLogout, AuthLogin, AuthCallback } from "./Auth";
 import { Dashboard } from "./Dashboard";
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { checkUserAuthentication } from "../common";
+import { getToolRoutes } from "./Dashboard/tools/tools";
+import Denied from "../components/Denied";
 
-async function protectedLoader() {
-  if (!(await checkUserAuthentication())) {
+async function protectedLoader(): Promise<Response | null> {
+  const isAuthenticated = await checkUserAuthentication();
+
+  if (!isAuthenticated) {
     return redirect("/auth/login");
   }
   return null;
 }
+
 const pages = createBrowserRouter([
   {
     id: "root",
@@ -19,6 +24,7 @@ const pages = createBrowserRouter([
         index: true,
         Component: Home,
       },
+
       {
         path: "auth/login",
         Component: AuthLogin,
@@ -38,6 +44,11 @@ const pages = createBrowserRouter([
         path: "dashboard",
         loader: protectedLoader,
         Component: Dashboard,
+        children: getToolRoutes(),
+      },
+      {
+        path: "dashboard/denied",
+        Component: Denied,
       },
     ],
   },
