@@ -8,10 +8,16 @@ import {
   ModalClose,
 } from "@mui/joy";
 import Menu from "@mui/icons-material/Menu";
-import { useMediaQuery } from "@mui/material";
-// Import any icons or additional components you might want to use
 
-function Sidebar() {
+import { useMediaQuery } from "@mui/material";
+import { Tool } from "./types";
+import { Link } from "react-router-dom";
+
+interface SidebarProps {
+  tools: Tool[];
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ tools }) => {
   const [open, setOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const isDesktop = useMediaQuery("(min-width:1025px)");
@@ -71,20 +77,32 @@ function Sidebar() {
               mt: 6,
               mb: 5,
               fontSize: "xl",
-              "& > div": { justifyContent: "center" },
+              "& > a": {
+                display: "flex",
+                textDecoration: "none",
+                width: "100%",
+              },
             }}
           >
-            {["Tool 1", "Tool 2", "Tool 3"].map((text, index) => (
-              <ListItemButton key={text} sx={{ fontWeight: "lg" }}>
-                {isHovered || !isDesktop ? text : <Menu />}{" "}
-                {/* Replace <Menu /> with the appropriate icon for the tool */}
-              </ListItemButton>
+            {tools.map((tool, index) => (
+              <Link to={"/dashboard/" + tool.path}>
+                <ListItemButton
+                  key={tool.name}
+                  sx={{
+                    fontWeight: "lg",
+                    justifyContent: "center",
+                    width: "100%",
+                  }}
+                >
+                  {isHovered || !isDesktop ? tool.name : tool.icon}{" "}
+                </ListItemButton>
+              </Link>
             ))}
           </List>
         </Box>
       </Drawer>
     </React.Fragment>
   );
-}
+};
 
 export default Sidebar;

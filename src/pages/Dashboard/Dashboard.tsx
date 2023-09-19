@@ -1,35 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@mui/joy";
 import Sidebar from "./Sidebar";
-import { useListResumes, useInsertResume } from "../../api/resume";
+import { tools } from "./tools/tools";
+import { Outlet } from "react-router";
+import getUserRole from "../../common/getUserRole";
+import { ACCESS_LEVELS, Tool } from "./types";
 
 const Dashboard: React.FC = () => {
-  const [shouldFetch, setShouldFetch] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const insertResume = useInsertResume();
-  const { data, isLoading } = useListResumes({
-    enabled: shouldFetch,
-  });
-  // Function to handle input change
-  const handleInputChange = (event: any) => {
-    setInputValue(event.target.value);
-  };
-  const handleGetClick = () => {
-    setShouldFetch(true);
-  };
+  const [renderTool, setRenderTool] = useState<Tool[]>([]);
+  const [role, setRole] = useState<string | null>(null);
 
-  const handlePostClick = () => {
-    // setShouldFetch(true);
-    insertResume.mutate(inputValue);
-  };
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      const userRole = await getUserRole();
+      setRole(userRole);
+    };
 
-  console.log(data);
+    fetchUserRole();
+  }, []);
+
+  useEffect(() => {
+    if (role) {
+      const toolsForRole = tools.filter(
+        (tool) =>
+          tool.accessLevel.includes(ACCESS_LEVELS.ALL) ||
+          tool.accessLevel.includes(role as ACCESS_LEVELS)
+      );
+      setRenderTool(toolsForRole);
+    }
+  }, [role]);
+
   return (
     <div>
       <Box sx={{ display: "flex" }}>
-        <Sidebar />
-        <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-          {/* Your main content will go here */}
+        <Sidebar tools={renderTool} />
+        <Box
+          component="main"
+          sx={{
+            flexGrow: 1,
+            p: 3,
+            marginLeft: { xs: 0, md: "60px" },
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Outlet />
         </Box>
       </Box>
     </div>
