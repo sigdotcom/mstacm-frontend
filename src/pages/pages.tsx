@@ -1,5 +1,5 @@
-import { Home } from "./Home";
-import { AuthLogout, AuthLogin, AuthCallback } from "./Auth";
+import { Home } from "./LandingPage";
+import { Signout } from "./Auth";
 import { Dashboard } from "./Dashboard";
 import { createBrowserRouter, redirect } from "react-router-dom";
 import { checkUserAuthentication } from "../common";
@@ -9,7 +9,7 @@ async function protectedLoader(): Promise<Response | null> {
   const isAuthenticated = await checkUserAuthentication();
 
   if (!isAuthenticated) {
-    return redirect("/auth/login");
+    return redirect("/");
   }
   return null;
 }
@@ -23,21 +23,9 @@ const pages = createBrowserRouter([
         index: true,
         Component: Home,
       },
-
-      {
-        path: "auth/login",
-        Component: AuthLogin,
-      },
-      {
-        path: "auth/callback",
-        Component: AuthCallback,
-        loader: async function authLoader() {
-          return redirect("/dashboard");
-        },
-      },
       {
         path: "auth/logout",
-        Component: AuthLogout,
+        Component: Signout,
       },
       {
         path: "dashboard",

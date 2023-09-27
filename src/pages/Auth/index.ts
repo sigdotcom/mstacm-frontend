@@ -1,3 +1,3 @@
-export { default as AuthCallback } from "./AuthCallback";
-export { default as AuthLogin } from "./AuthLogin";
-export { default as AuthLogout } from "./AuthLogout";
+export { default as Signout } from "./Signout";
+export { default as Signin } from "./Signin";
+export { default as Signup } from "./Signup";
