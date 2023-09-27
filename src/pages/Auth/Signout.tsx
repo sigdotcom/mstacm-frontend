@@ -1,11 +1,13 @@
 import { Auth } from "aws-amplify";
 import React from "react";
+import { useNavigate } from "react-router";
 
 const AuthLogout: React.FC = () => {
+  let navigate = useNavigate();
   const logout = async () => {
     try {
       await Auth.signOut();
-      console.log("Successfully signed out");
+      return navigate("/");
     } catch (error) {
       console.error("Error signing out:", error);
     }
