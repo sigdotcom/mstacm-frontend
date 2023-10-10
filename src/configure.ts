@@ -24,14 +24,7 @@ if (!env) {
 const ssmClient = new SSMClient(ssmClientConfig);
 // Fetch parameters
 async function fetchParameters() {
-  let apiUrl: string =
-    "https://nnikhk3cq3.execute-api.us-east-1.amazonaws.com/Prod";
-
   try {
-    // const authDomain = new GetParameterCommand({
-    //   Name: "authDomain",
-    //   WithDecryption: true,
-    // });
     const userPoolId = new GetParameterCommand({
       Name: "userPoolId",
       WithDecryption: true,
@@ -40,33 +33,20 @@ async function fetchParameters() {
       Name: "userPoolWebClientId",
       WithDecryption: true,
     });
-    // const redirectSignIn = new GetParameterCommand({
-    //   Name: "redirectSignIn",
-    //   WithDecryption: true,
-    // });
+    const apiUrl = new GetParameterCommand({
+      Name: "apiUrl",
+      WithDecryption: true,
+    });
 
-    // const redirectSignOut = new GetParameterCommand({
-    //   Name: "redirectSignOut",
-    //   WithDecryption: true,
-    // });
-
-    // const authDomainResponse = await ssmClient.send(authDomain);
     const userPoolIdResponse = await ssmClient.send(userPoolId);
     const userPoolWebClientIdResponse = await ssmClient.send(
       userPoolWebClientId
     );
-    // const redirectSignInResponse = await ssmClient.send(redirectSignIn);
-    // const redirectSignOutResponse = await ssmClient.send(redirectSignOut);
-
-    // if (authDomainResponse.Parameter?.Value === "mstacm-prod-auth") {
-    //   apiUrl = "https://dcyks1vctb.execute-api.us-east-1.amazonaws.com/Prod";
-    // }
-
+    const apiUrlResponse = await ssmClient.send(apiUrl);
     const envContent = `
         REACT_APP_USER_POOL_ID=${userPoolIdResponse.Parameter?.Value}
         REACT_APP_USER_POOL_CLIENT_ID=${userPoolWebClientIdResponse.Parameter?.Value}
-
-        REACT_APP_API_URL=${apiUrl}
+        REACT_APP_API_URL=${apiUrlResponse.Parameter?.Value}
       `;
 
     const formattedEnv = envContent

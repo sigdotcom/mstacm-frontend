@@ -2,13 +2,12 @@ import axios from "axios";
 import { Auth } from "aws-amplify";
 import { useQuery, useMutation } from "react-query";
 
-// const resumeUrl: string = "http://127.0.0.1:4000/resumes";
-const fetchResumes = async () => {
+const fetchUsers = async () => {
   const user = await Auth.currentAuthenticatedUser();
   const token = user.signInUserSession.idToken.jwtToken;
 
   const { data } = await axios.get(
-    process.env.REACT_APP_API_URL + "/resumes/list",
+    process.env.REACT_APP_API_URL + "/listUsers",
     {
       headers: {
         Authorization: token,
@@ -19,8 +18,8 @@ const fetchResumes = async () => {
   return data;
 };
 
-export const useListResumes = (options = {}) => {
-  return useQuery("resumes", fetchResumes, options);
+export const useListUsers = (options = {}) => {
+  return useQuery("users", fetchUsers, options);
 };
 
 const insertResume = async (file: string) => {
