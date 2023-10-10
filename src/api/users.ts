@@ -1,13 +1,25 @@
 import axios from "axios";
 import { Auth } from "aws-amplify";
 import { useQuery, useMutation } from "react-query";
+import { transformDynamoDbItem } from "../common/utils";
+
+const fetchCurrentUser = async () => {
+  const user = await Auth.currentAuthenticatedUser();
+  const userSession = user.signInUserSession;
+
+  return userSession;
+};
+
+export const useCurrentUser = (options = {}) => {
+  return useQuery("users", fetchCurrentUser, options);
+};
 
 const fetchUsers = async () => {
   const user = await Auth.currentAuthenticatedUser();
   const token = user.signInUserSession.idToken.jwtToken;
 
   const { data } = await axios.get(
-    process.env.REACT_APP_API_URL + "/listUsers",
+    process.env.REACT_APP_API_URL + "/users/list",
     {
       headers: {
         Authorization: token,
@@ -15,23 +27,27 @@ const fetchUsers = async () => {
     }
   );
 
-  return data;
+  const transformedData = data.map(transformDynamoDbItem);
+
+  return transformedData;
 };
 
 export const useListUsers = (options = {}) => {
   return useQuery("users", fetchUsers, options);
 };
 
-const insertResume = async (file: string) => {
+const updatePermission = async (payload: {
+  userId: string;
+  userRole: string;
+  userPoolId: string;
+}) => {
   const user = await Auth.currentAuthenticatedUser();
   const token = user.signInUserSession.idToken.jwtToken;
-  // const formData = new FormData();
-  // formData.append('resume', file);
 
-  // Adjust URL and config as needed
   const response = await axios.post(
-    process.env.REACT_APP_API_URL + "/resumes/insert",
-    file,
+    process.env.REACT_APP_API_URL + "users/permissions",
+    payload,
+
     {
       headers: {
         Authorization: token,
@@ -42,6 +58,6 @@ const insertResume = async (file: string) => {
   return response.data;
 };
 
-export const useInsertResume = () => {
-  return useMutation(insertResume);
+export const useUpdatePermission = () => {
+  return useMutation(updatePermission);
 };

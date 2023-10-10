@@ -2,10 +2,12 @@ import React from "react";
 import { ACCESS_LEVELS, Tool } from "../types";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import LockIcon from "@mui/icons-material/Lock";
 import getUserRole from "../../../common/getUserRole";
 import Profile from "./Profile";
 import Resume from "./Resume";
 import { RouteObject, redirect } from "react-router";
+import Permissions from "./Permissions";
 
 export const tools: Tool[] = [
   {
@@ -21,6 +23,13 @@ export const tools: Tool[] = [
     path: "resume",
     accessLevel: [ACCESS_LEVELS.SPONSOR, ACCESS_LEVELS.ADMIN],
     component: Resume,
+  },
+  {
+    name: "Permissions",
+    icon: React.createElement(LockIcon),
+    path: "permissions",
+    accessLevel: [ACCESS_LEVELS.ADMIN],
+    component: Permissions,
   },
 ];
 
