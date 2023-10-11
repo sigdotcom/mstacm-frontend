@@ -50,7 +50,9 @@ const Permissions = () => {
         <Select
           sx={{ width: 150 }}
           defaultValue={params.value as string}
-          onChange={(event, value) => handleRoleChange(params.id, value)}
+          onChange={(event, value) =>
+            handleRoleChange(params.id, value, params.row.awsAccountStatus)
+          }
         >
           <Option value="member">member</Option>
           <Option value="admin">admin</Option>
@@ -101,13 +103,18 @@ const Permissions = () => {
         ),
     },
   ];
-  const handleRoleChange = async (id: any, newValue: string | null) => {
+  const handleRoleChange = async (
+    id: any,
+    newValue: string | null,
+    identityId: string
+  ) => {
     if (newValue && process.env.REACT_APP_USER_POOL_ID) {
       try {
         await updatePermission.mutateAsync({
           userId: id,
           userRole: newValue,
           userPoolId: process.env.REACT_APP_USER_POOL_ID,
+          identityId: identityId,
         });
 
         // Trigger the Alert on success

@@ -69,6 +69,7 @@ const updatePermission = async (payload: {
   userId: string;
   userRole: string;
   userPoolId: string;
+  identityId: string;
 }) => {
   const user = await Auth.currentAuthenticatedUser();
   const token = user.signInUserSession.idToken.jwtToken;
