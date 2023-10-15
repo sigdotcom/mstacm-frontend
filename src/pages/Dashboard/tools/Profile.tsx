@@ -15,7 +15,9 @@ const Profile = () => {
   const requestAccount = useRequestAccount();
   const userId = currentUserData?.accessToken?.payload?.username || "";
 
-  const { data: getUserData, isLoading: getUserLoading } = useGetUser(userId);
+  const { data: getUserData, isLoading: getUserLoading } = useGetUser(userId, {
+    refetchrefetchInterval: 2000,
+  });
 
   const [role, setRole] = useState<string>("");
   const [email, setEmail] = useState<string>("");

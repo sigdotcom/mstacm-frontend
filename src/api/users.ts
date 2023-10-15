@@ -1,8 +1,8 @@
 import axios from "axios";
 import { Auth } from "aws-amplify";
 import { useQuery, useMutation } from "react-query";
-import { transformDynamoDbItem } from "../common/utils";
 import { useCallback } from "react";
+import { transformDynamoDbItem } from "./utils";
 
 const fetchCurrentUser = async () => {
   const user = await Auth.currentAuthenticatedUser();

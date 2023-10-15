@@ -20,7 +20,9 @@ import PlaylistAddCheckCircleRoundedIcon from "@mui/icons-material/PlaylistAddCh
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 const Permissions = () => {
-  const { data: rawData, isLoading } = useListUsers();
+  const { data: rawData, isLoading } = useListUsers({
+    refetchrefetchInterval: 2000,
+  });
   const updatePermission = useUpdatePermission();
   const createAccount = useCreateAccount();
   const deleteAccount = useDeleteAccount();
