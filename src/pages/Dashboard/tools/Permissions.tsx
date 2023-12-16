@@ -19,9 +19,16 @@ import {
 import PlaylistAddCheckCircleRoundedIcon from "@mui/icons-material/PlaylistAddCheckCircleRounded";
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import RefreshIcon from "@mui/icons-material/Refresh";
 const Permissions = () => {
-  const { data: rawData, isLoading } = useListUsers({
+  const {
+    data: rawData,
+    isLoading: listUserLoading,
+    refetch,
+  } = useListUsers({
     refetchrefetchInterval: 2000,
+    refetchOnWindowFocus: true,
+    refetchIntervalInBackground: false,
   });
   const updatePermission = useUpdatePermission();
   const createAccount = useCreateAccount();
@@ -188,7 +195,7 @@ const Permissions = () => {
     }
   };
 
-  const filteredData = isLoading
+  const filteredData = listUserLoading
     ? []
     : data.filter(
         (row: {
@@ -272,6 +279,8 @@ const Permissions = () => {
         pageSizeOptions={[5]}
         disableRowSelectionOnClick
         getRowId={(row) => row.userId}
+        loading={listUserLoading}
+        autoHeight={true}
       />
     </Box>
   );
