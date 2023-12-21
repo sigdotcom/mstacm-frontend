@@ -9,6 +9,7 @@ import PlaylistAddCheckCircleRoundedIcon from "@mui/icons-material/PlaylistAddCh
 import AccountCircleRoundedIcon from "@mui/icons-material/AccountCircleRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import OpenInNew from "@mui/icons-material/OpenInNew";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const { data: currentUserData } = useCurrentUser();
@@ -150,6 +151,11 @@ const Profile = () => {
           Request AWS Access
         </Button>
       )}
+      <Link to="/auth/logout" style={{ display: "block", marginTop: "10px" }}>
+        <Button variant="outlined" color="neutral" sx={{ width: "200px" }}>
+          Logout
+        </Button>
+      </Link>
     </div>
   );
 };
